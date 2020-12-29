@@ -1,0 +1,14 @@
+.image {
+  background-color: white;
+  flex-basis: 30vw;
+  // max-width: 30vw;
+//   max-height: 30vw;
+  border: 2px solid black;
+  padding: 5%;
+  margin: 2.5% 1%;
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}

@@ -1,0 +1,19 @@
+.meme-list {
+  background-color: #282C35;
+}
+.meme-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 5%;
+}
+@media screen and (min-width: 800px) {
+  .column {
+    flex: 25%;
+  }
+}
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 100%;
+  }
+}
