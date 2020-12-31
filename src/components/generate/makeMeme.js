@@ -9,6 +9,8 @@ export default class Makememe extends Component {
       memeTexts: [],
       topText: "",
       bottomText: "",
+      mousePos: { x: 0, y: 0 },
+      imgprop: { x: 0, y: 0 },
     };
   }
 
@@ -30,28 +32,43 @@ export default class Makememe extends Component {
     this.setState({ topText: text });
   };
 
+  getMousePosition = (e) => {
+    let x = e.clientX;
+    let y = e.clientY;
+    x = x - 20;
+    y = y - 20;
+    let pos = { x, y };
+    console.log(x, y);
+    this.setState({ mousePos: pos });
+  };
+
+  ImageLoad = ({ target: img }) => {
+    let x = img.offsetHeight;
+    let y = img.offsetWidth;
+    const pic = { x, y };
+    this.setState({ imgprop: pic });
+  };
+
   render() {
+    const { x, y } = this.state.mousePos;
     return (
       <div className="make-meme">
         <div className="heading">{this.props.name}</div>
-        {/* <h2 className="text-1">
-          <span
-            draggable={true}
-            onDragStart={(e) => {
-              this.onDragStart(e, "1");
-            }}
-            className="text "
-          >
-            Some rando text
-          </span>
-        </h2> */}
         <button className="add-text" onClick={this.addTextbox}>
           Add Text
         </button>
         <div className="images">
-        <h2>{this.state.topText}</h2>
+          <span
+            style={{ left: x + "px", top: y + "px" }}
+            draggable
+            // onMouseUp={this.getMousePosition}
+            onDragEnd={this.getMousePosition}
+          >
+            {this.state.topText}
+          </span>
           <img
             src={this.props.imgSrc}
+            onLoad={this.ImageLoad}
             onDragOver={(e) => {
               this.onDragOver(e);
             }}
@@ -61,7 +78,7 @@ export default class Makememe extends Component {
           />
         </div>
         <div className="text">
-          <Textbox text={this.addTopText}/>
+          <Textbox text={this.addTopText} />
         </div>
       </div>
     );
