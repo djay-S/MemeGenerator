@@ -1,0 +1,89 @@
+.make-meme {
+  // position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 2em 3fr;
+  grid-column-gap: 10%;
+  // grid-row-gap: 10%;
+  padding: 1%;
+  grid-template-areas:
+    "heading button"
+    "image text";
+  // justify-content: center;
+  // align-items: center;
+  .heading {
+    grid-area: heading;
+    align-self: center;
+    justify-self: center;
+  }
+  .add-text {
+    grid-area: button;
+    align-self: center;
+    justify-self: center;
+    max-width: 30%;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .images {
+    // border: 1px solid grey;
+    // width: 100%;
+    // position: absolute;
+    padding: 1%;
+    left: 0;
+    display: inline-block;
+    grid-area: image;
+    // align-self: center;
+    h2 {
+      // color: white;
+      // position: absolute;
+      // width: 80%;
+      // text-align: center;
+      // left: 50%;
+      // transform: translateX(-50%);
+      // margin: 15px 0;
+      // padding: 0 5px;
+      font-family: impact, sans-serif;
+      font-size: 2em;
+      text-transform: uppercase;
+      color: white;
+      letter-spacing: 1px;
+      cursor: default;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000,
+        -2px 2px 0 #000, 0 2px 0 #000, 2px 0 0 #000, 0 -2px 0 #000,
+        -2px 0 0 #000, 2px 2px 5px #000;
+    }
+    img {
+      // flex: 2;
+      padding: 1%;
+      max-width: 100%;
+      border: 1px solid grey;
+      //   max-height: 90vh;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .text {
+    grid-area: text;
+    // align-self: flex-end;
+    flex: 1;
+    padding: 1%;
+  }
+}
+@media screen and (max-width: 800px) {
+  .meme {
+    width: 100%;
+    position: absolute;
+    left: 0;
+  }
+}
+span.text {
+  background-color: transparent;
+}
+
+h2.text-1 {
+  color: whitesmoke;
+}
