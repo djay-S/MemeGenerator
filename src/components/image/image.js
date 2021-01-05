@@ -9,10 +9,11 @@ export default class Image extends Component {
     this.state = {
       isModalOpen: false,
     };
+    this.modalRef = React.createRef();
   }
 
   imageClick = () => {
-    console.log(this.props);
+    // console.log(this.props);
     if (!this.state.isModalOpen) this.toggleModalOpen();
   };
 
@@ -30,11 +31,15 @@ export default class Image extends Component {
           onRequestClose={this.toggleModalOpen}
           ariaHideApp={false}
         >
-          <div className="">
+          <div className="class-modal" ref={this.modalRef}>
             <div className="close" onClick={this.toggleModalOpen}>
               ✕
             </div>
-            <Makememe imgSrc={this.props.url} name={this.props.name} />
+            <Makememe
+              imgSrc={this.props.url}
+              name={this.props.name}
+              modalRef={this.modalRef}
+            />
           </div>
         </Modal>
       </div>
