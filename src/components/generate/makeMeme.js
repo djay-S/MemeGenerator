@@ -6,107 +6,92 @@ export default class Makememe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      memeTexts: [{ id: 0, value: "", size: 16, position: { x: 0, y: 0 } }],
-      topText: "",
-      fSize: 16,
-      bottomText: "",
-      mousePos: { x: 0, y: 0 },
-      imageDimensions: { h: 0, w: 0 },
+      memeTexts: [
+        {
+          id: 0,
+          value: "",
+          size: 20,
+          isDragging: false,
+          position: { x: -1, y: -1 },
+        },
+      ],
+      imageBase64: "",
+      isDragActive: false,
     };
+    this.divRef = React.createRef();
     this.imageRef = React.createRef();
     this.modalReference = React.createRef();
+    this.svgRef = React.createRef();
   }
 
-  onDragStart = (ev, text) => {
-    // ev.datatransfer.setData("id", text);
-  };
-
-  imageLoaded = ({ target: img }) => {
-    // debugger
-    let imgY = this.imageRef.current.clientHeight;
-    let imgX = this.imageRef.current.clientWidth;
-    const aspRatio = imgY / imgX;
-    console.log(this.imageRef, this.modalReference, this.props.modalRef);
-    let imgH = this.props.modalRef.current.clientHeight * 0.9;
-    let imgW = this.props.modalRef.current.clientHeight / aspRatio;
-    console.log("image dimens:", imgH, imgW);
+  componentDidMount() {
+    this.loadImage();
     const { memeTexts } = this.state;
-    // memeTexts.map((meme) => {
-    //   m;
-    // });
-    const { position } = this.getNewPosition();
-    memeTexts[0].position = {
-      // x: this.imageRef.current.offsetLeft,
-      // y: this.imageRef.current.offsetTop,
-      position,
-    };
-    // memeTexts.position = this.imageRef.current.offsetTop;
+    memeTexts.map((meme) => {
+      if (meme.position.x === -1 && meme.position.y === -1) {
+        meme.position.x = this.divRef.current.clientWidth / 2;
+        meme.position.y = this.divRef.current.clientHeight / 2;
+      }
+    });
     this.setState({
-      // mousePos: { y: img.offsetHeight, x: img.offsetWidth },
-      mousePos: {
-        x: this.imageRef.current.offsetLeft,
-        y: this.imageRef.current.offsetTop,
-      },
-      imageDimensions: {
-        h: imgH,
-        w: imgW,
-      },
+      svgHeight: this.divRef.current.clientHeight,
+      svgWidth: this.divRef.current.clientWidth,
       memeTexts: memeTexts,
     });
+  }
+
+  loadImage = () => {
+    const image = new Image();
+    image.src = this.props.imgSrc;
+    image.onload = () => {
+      const base64String = this.convertToBase64Image(image);
+      let height = image.height;
+      let width = image.width;
+      this.setState({
+        imageBase64: base64String,
+        height: height,
+        width: width,
+      });
+    };
   };
 
-  onDragOver = (ev) => {
-    ev.preventDefault();
-  };
-
-  onDrop = (ev) => {};
-
-  getNewPosition = () => {
-    let x = this.imageRef.current.offsetLeft;
-    let y = this.imageRef.current.offsetTop;
-    const position = { x: x, y: y };
-    console.log("posot", position);
-    return position;
-  };
+  convertToBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL;
+  }
 
   addTextbox = () => {
     const textBox = this.state.memeTexts;
     let newId = textBox.length > 0 ? textBox[textBox.length - 1].id + 1 : 0;
-    console.log("adding textbox", textBox, newId);
-    const { position } = this.getNewPosition();
-    textBox.push({ id: newId, value: "", size: 16, position: { position } });
+    let x = this.divRef.current.clientWidth / 2;
+    let y = this.divRef.current.clientHeight / 2;
+    textBox.push({ id: newId, value: "", size: 20, position: { x, y } });
     this.setState({ memeTexts: textBox });
-    console.log("adding textbox", textBox, newId);
   };
 
-  addTopText = (text, id) => {
-    // debugger
-    let offX = this.imageRef.current.offsetLeft;
-    let offY = this.imageRef.current.offsetTop;
-    const texts = this.state.memeTexts;
-    texts.map((txt) => {
+  addMemeText = (text, id) => {
+    const { memeTexts } = this.state;
+    memeTexts.map((txt) => {
       if (txt.id === id) {
         txt.value = text;
-        // txt.size = 16;
-        // txt.position = { x: 0, y: 0 };
       }
     });
-    console.log("event", id, texts);
-    this.setState({ topText: text, memeTexts: texts });
+    this.setState({ memeTexts: memeTexts });
   };
 
   addFontSize = (size, id) => {
-    // console.log("addFontSize", size, id);
-    const texts = this.state.memeTexts;
-    console.log("texts", texts);
-    texts.map((txt) => {
+    const { memeTexts } = this.state;
+    memeTexts.map((txt) => {
       if (txt.id === id) {
         txt.size = size;
-        // txt.position.x = 0;
-        // txt.position.y = 0;
       }
     });
-    this.setState({ fSize: size, memeTexts: texts });
+    this.setState({ memeTexts: memeTexts });
   };
 
   handleRemoveMeme = (id) => {
@@ -122,9 +107,8 @@ export default class Makememe extends Component {
     const textBox = this.state.memeTexts;
     return textBox.map((box) => {
       return (
-        // console.log("box", box.id);
         <Textbox
-          text={(text) => this.addTopText(text, box.id)}
+          text={(text) => this.addMemeText(text, box.id)}
           removeId={this.handleRemoveMeme}
           key={box.id}
           memeId={box.id}
@@ -134,101 +118,156 @@ export default class Makememe extends Component {
         />
       );
     });
-    // return <Textbox text={(e) => this.addTopText(e)} key={0} />;
   };
 
-  getMousePosition = (e, id) => {
-    let imgY = this.imageRef.current.offsetTop;
-    let imgX = this.imageRef.current.offsetLeft;
-    const aspRatio = imgY / imgX;
-    let x = e.clientX;
-    let y = e.clientY;
-    // x = x - 96;
-    // y = y - 47;
-    x = x - imgY;
-    y = y - imgX;
-    let pos = { x, y };
-    console.log(x, y);
+  getMemePosition = (e) => {
+    let rect = this.imageRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    let memeObject = {};
+    memeObject = {
+      isDragging: true,
+      x: x,
+      y: y,
+    };
+    return memeObject;
+  };
+
+  handleMouseDown = (e, id) => {
+    const memeObject = this.getMemePosition(e);
+    document.addEventListener("mousemove", (e) => this.handleMouseMove(e, id));
     const { memeTexts } = this.state;
     memeTexts.map((meme) => {
       if (meme.id === id) {
-        meme.position = pos;
+        meme.isDragging = memeObject.isDragging;
+        meme.position.y = memeObject.y;
+        meme.position.x = memeObject.x;
       }
     });
-    this.setState({ memeTexts: memeTexts });
-    this.setState({ mousePos: pos });
+    this.setState({
+      memeTexts: memeTexts,
+      isDragActive: true,
+    });
+  };
+
+  handleMouseMove = (e, id) => {
+    if (this.state.isDragActive) {
+      const { memeTexts } = this.state;
+      let memeObject = {};
+      memeTexts.map((meme) => {
+        if (meme.id === id && meme.isDragging) {
+          memeObject = this.getMemePosition(e);
+          meme.isDragging = memeObject.isDragging;
+          meme.position.y = memeObject.y;
+          meme.position.x = memeObject.x;
+        }
+      });
+      this.setState({
+        memeTexts: memeTexts,
+      });
+    }
+  };
+
+  handleMouseUp = (id) => {
+    document.removeEventListener("mousemove", this.handleMouseMove);
+    const { memeTexts } = this.state;
+    memeTexts.map((meme) => {
+      if (meme.id === id) {
+        meme.isDragging = false;
+      }
+    });
+    this.setState({
+      memeTexts: memeTexts,
+      isDragActive: false,
+    });
   };
 
   renderMemeTexts = () => {
-    // debugger;
+    const memeStyle = {
+      fontFamily: "impact, sans-serif",
+      textTransform: "uppercase",
+      color: "white",
+      letterSpacing: "1px",
+      stroke: "black",
+      strokeWidth: "1.5px",
+      cursor: "default",
+    };
     const { memeTexts } = this.state;
-    console.log("memetext", memeTexts);
     return memeTexts.map((meme) => {
-      console.log("meme", meme);
       return (
-        <span
-          style={{
-            left: meme.position.x + "px",
-            top: meme.position.y + "px",
-            fontSize: meme.size + "px",
-          }}
+        <text
           draggable
-          onDragEnd={(e) => {
-            this.getMousePosition(e, meme.id);
-          }}
           key={meme.id}
+          fill="white"
+          x={meme.position.x + "px"}
+          y={meme.position.y + "px"}
+          dominantBaseline="middle"
+          textAnchor="middle"
+          onMouseDown={(e) => {
+            this.handleMouseDown(e, meme.id);
+          }}
+          onMouseUp={() => {
+            this.handleMouseUp(meme.id);
+          }}
+          style={{
+            ...memeStyle,
+            fontSize: meme.size + "px",
+            zIndex: meme.isDragging ? 10 : 1,
+          }}
         >
           {meme.value}
-        </span>
+        </text>
       );
     });
-    // const { x, y } = this.state.mousePos;
-    // const fontSize = this.state.fSize + "px";
-    // // console.log("fontSize", fontSize);
-    // return (
-    //   <span
-    //     style={{ left: x + "px", top: y + "px", fontSize: fontSize }}
-    //     draggable
-    //     // onMouseUp={this.getMousePosition}
-    //     onDragEnd={this.getMousePosition}
-    //   >
-    //     {this.state.topText}
-    //   </span>
-    // );
   };
 
-  // componentDidUpdate() {
-  //   console.log("update");
-  //   this.renderMemeTexts();
-  // }
-
   downLoadMeme = () => {
-    console.log("download Meme");
+    const svg = this.svgRef.current;
+    let svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("id", "canvas");
+    const svgSize = svg.getBoundingClientRect();
+    canvas.width = svgSize.width;
+    canvas.height = svgSize.height;
+    const img = document.createElement("img");
+    img.setAttribute(
+      "src",
+      "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
+    );
+    img.onload = function () {
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      const canvasdata = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.download = "meme.png";
+      a.href = canvasdata;
+      document.body.appendChild(a);
+      a.click();
+    };
   };
 
   render() {
-    const { x, y } = this.state.mousePos;
-    const { h, w } = this.state.imageDimensions;
     return (
       <div className="make-meme" ref={this.modalReference}>
         <div className="heading">{this.props.name}</div>
         <button className="add-text" onClick={this.addTextbox}>
           Add Text
         </button>
-        <div className="images">
-          {this.renderMemeTexts()}
-          <img
-            ref={this.imageRef}
-            onLoad={this.imageLoaded}
-            src={this.props.imgSrc}
-            style={{ width: w, height: h }}
-            onDragOver={(e) => {
-              this.onDragOver(e);
-            }}
-            onDrop={(e) => {
-              this.onDrop(e);
-            }}
-          />
+        <div className="images" ref={this.divRef}>
+          <svg
+            ref={this.svgRef}
+            height={this.state.svgHeight}
+            width={this.state.svgWidth}
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
+            <image
+              ref={this.imageRef}
+              href={this.state.imageBase64}
+              height={this.state.svgHeight}
+              width={this.state.svgWidth}
+            ></image>
+            {this.renderMemeTexts()}
+          </svg>
         </div>
         <div className="text">{this.renderTextBoxes()}</div>
         <div className="download">

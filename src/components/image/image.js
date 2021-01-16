@@ -13,7 +13,6 @@ export default class Image extends Component {
   }
 
   imageClick = () => {
-    // console.log(this.props);
     if (!this.state.isModalOpen) this.toggleModalOpen();
   };
 
@@ -30,6 +29,7 @@ export default class Image extends Component {
           isOpen={this.state.isModalOpen}
           onRequestClose={this.toggleModalOpen}
           ariaHideApp={false}
+          closeTimeoutMS={750}
         >
           <div className="class-modal" ref={this.modalRef}>
             <div className="close" onClick={this.toggleModalOpen}>

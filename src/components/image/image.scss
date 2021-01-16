@@ -34,6 +34,22 @@
   animation: blur 0.5s ease-out forwards;
 }
 
+.ReactModal__Overlay {
+  opacity: 0;
+  transform: translateY(-400px);
+  transition: all 0.75s ease-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transform: translateY(-400px);
+}
+
 @keyframes blur {
   0% {
     backdrop-filter: blur(0px);

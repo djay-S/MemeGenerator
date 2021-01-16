@@ -7,7 +7,7 @@ export default class Textbox extends Component {
     this.state = {
       id: this.props.memeId,
       text: "",
-      fontSize: 16,
+      fontSize: 20,
       isEnabled: true,
     };
   }
@@ -20,7 +20,6 @@ export default class Textbox extends Component {
   };
 
   handleBoxRemove = () => {
-    // console.log("remove");
     this.setState({ isEnabled: !this.state.isEnabled });
     this.props.removeId(this.state.id);
   };
@@ -36,8 +35,6 @@ export default class Textbox extends Component {
     const enabledShade = this.state.isEnabled ? "enabled" : "disabled";
     return (
       <div className={"textbox " + enabledShade}>
-        {/* TextBox */}
-        {/* <br /> */}
         <input
           type="text"
           placeholder="Enter meme text"
@@ -49,7 +46,7 @@ export default class Textbox extends Component {
           Font Size: {this.state.fontSize} px
           <input
             type="range"
-            min="16"
+            min="20"
             max="60"
             value={this.state.fontSize}
             step="1"
@@ -59,7 +56,7 @@ export default class Textbox extends Component {
         <button className="remove-button" onClick={this.handleBoxRemove}>
           {this.state.isEnabled ? "Remove" : "Add"}
         </button>
-        {/* //can also be change font properties */}
+        {/* //can also be change font properties, add rotate */}
       </div>
     );
   }

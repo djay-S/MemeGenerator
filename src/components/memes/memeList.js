@@ -56,9 +56,6 @@ export default class Memelist extends Component {
               <Image url={meme.url} name={meme.name} key={id} />
             ))}
           </div>
-          {/* {images.map((meme, id) => (
-          <Image url={meme.url} name={meme.name} key={id} />
-        ))} */}
         </div>
       </div>
     );
