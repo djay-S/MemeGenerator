@@ -1,0 +1,60 @@
+.image {
+  background-color: white;
+  flex-basis: 30vw;
+  // max-width: 30vw;
+  //   max-height: 30vw;
+  // border: 1px solid grey;
+  box-shadow: 0 0 5px 1px grey;
+  padding: 5%;
+  margin: 2.5% 1%;
+  &:hover {
+    box-shadow: 0 0 10 grey;
+  }
+  img {
+    border: 1px solid black;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+.close {
+  position: relative;
+  cursor: default;
+  float: right;
+}
+
+.class-modal {
+  height: 100%;
+}
+
+.ReactModal__Overlay--after-open {
+  // overflow: hidden;
+  // filter: blur(5px);
+  // filter: blur(0px);
+  animation: blur 0.5s ease-out forwards;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transform: translateY(-400px);
+  transition: all 0.75s ease-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transform: translateY(-400px);
+}
+
+@keyframes blur {
+  0% {
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    backdrop-filter: blur(3px);
+  }
+}
