@@ -47,7 +47,7 @@ exports.memes = [
   "Marked Safe From.jpg",
   "Who Killed Hannibal.jpg",
   "Evil Kermit.jpg",
-  "Who Would Win?.jpg",
+  "Who Would Win.jpg",
   "Epic Handshake.jpg",
   "Woman Yelling At Cat.jpg",
   "Drake Hotline Bling.jpg",
