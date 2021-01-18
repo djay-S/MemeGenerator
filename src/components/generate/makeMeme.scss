@@ -1,38 +1,38 @@
-.make-meme {
-  // position: relative;
-  display: grid;
-  width: 100%;
-  height: 100%;
-  // border: 2px solid black;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1.5em 3fr 1.5em;
-  grid-column-gap: 10%;
-  // grid-row-gap: 10%;
-  padding: 1%;
-  grid-template-areas:
-    "heading button"
-    "image text"
-    ". bottom";
-  .heading {
-    grid-area: heading;
-    align-self: center;
-    justify-self: center;
-  }
-  .add-text {
-    grid-area: button;
-    align-self: center;
-    justify-self: center;
-    max-width: 30%;
-  }
-  .download {
-    grid-area: bottom;
-    position: relative;
-    align-self: flex-start;
-    justify-self: center;
-  }
-}
-
 @media screen and (min-width: 800px) {
+  .make-meme {
+    // position: relative;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    // border: 2px solid black;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1.5em 3fr 1.5em;
+    grid-column-gap: 10%;
+    // grid-row-gap: 10%;
+    padding: 1%;
+    grid-template-areas:
+      "heading button"
+      "image text"
+      ". bottom";
+    .heading {
+      grid-area: heading;
+      align-self: center;
+      justify-self: center;
+    }
+    .add-text {
+      grid-area: button;
+      align-self: center;
+      justify-self: center;
+      max-width: 30%;
+    }
+    .download {
+      grid-area: bottom;
+      position: relative;
+      align-self: flex-start;
+      justify-self: center;
+    }
+  }
+
   .images {
     left: 0;
     display: inline-block;
@@ -46,10 +46,38 @@
   }
 }
 @media screen and (max-width: 800px) {
+  .make-meme {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    padding: 1%;
+    // grid-template-columns: 1fr;
+    // grid-template-rows: 1fr, 1fr, 1fr;
+    grid-template-areas:
+      "heading" "button"
+      "image" "text"
+      "bottom";
+  }
+  .heading {
+    grid-area: heading;
+  }
+  .add-text {
+    grid-area: text;
+  }
+  .download {
+    grid-area: bottom;
+  }
   .meme {
     width: 100%;
     position: absolute;
     left: 0;
+  }
+  .images {
+    // left: 0;
+    // display: inline-block;
+    width: 100%;
+    background-color: red;
+    grid-area: image;
   }
 }
 span.text {
