@@ -190,6 +190,7 @@ export default class Makememe extends Component {
       letterSpacing: "1px",
       stroke: "black",
       strokeWidth: "1.5px",
+      textShadow: "0px 0px 0.01em black",
       cursor: "default",
     };
     const { memeTexts } = this.state;
