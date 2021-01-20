@@ -21,6 +21,7 @@ export default class Image extends Component {
   };
 
   render() {
+    const modalStyle = { content: { padding: "2%" } };
     return (
       <div className="image" onClick={this.imageClick}>
         <img src={this.props.url} alt={this.props.name} />
@@ -30,6 +31,7 @@ export default class Image extends Component {
           onRequestClose={this.toggleModalOpen}
           ariaHideApp={false}
           closeTimeoutMS={750}
+          style={modalStyle}
         >
           <div className="class-modal" ref={this.modalRef}>
             <div className="close" onClick={this.toggleModalOpen}>

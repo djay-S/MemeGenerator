@@ -120,6 +120,68 @@ export default class Makememe extends Component {
     });
   };
 
+  handleTouchDown = (e, id) => {
+    const memeObject = this.getMemeTouchPosition(e);
+    document.addEventListener("touchmove", (e) => this.handleTouchMove(e, id));
+    const { memeTexts } = this.state;
+    memeTexts.map((meme) => {
+      if (meme.id === id) {
+        meme.isDragging = memeObject.isDragging;
+        meme.position.y = memeObject.y;
+        meme.position.x = memeObject.x;
+      }
+    });
+    this.setState({
+      memeTexts: memeTexts,
+      isDragActive: true,
+    });
+  };
+  
+  handleTouchMove = (e, id) => {
+    if (this.state.isDragActive) {
+      const { memeTexts } = this.state;
+      let memeObject = {};
+      memeTexts.map((meme) => {
+        if (meme.id === id && meme.isDragging) {
+          memeObject = this.getMemeTouchPosition(e);
+          meme.isDragging = memeObject.isDragging;
+          meme.position.y = memeObject.y;
+          meme.position.x = memeObject.x;
+        }
+      });
+      this.setState({
+        memeTexts: memeTexts,
+      });
+    }
+  };
+
+  handleTouchUp = (id) => {
+    document.removeEventListener("touchmove", this.handleMouseMove);
+    const { memeTexts } = this.state;
+    memeTexts.map((meme) => {
+      if (meme.id === id) {
+        meme.isDragging = false;
+      }
+    });
+    this.setState({
+      memeTexts: memeTexts,
+      isDragActive: false,
+    });
+  };
+
+  getMemeTouchPosition = (e) => {
+    let rect = this.imageRef.current.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const y = e.touches[0].clientY - rect.top;
+    let memeObject = {};
+    memeObject = {
+      isDragging: true,
+      x: x,
+      y: y,
+    };
+    return memeObject;
+  };
+
   getMemePosition = (e) => {
     let rect = this.imageRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -204,6 +266,12 @@ export default class Makememe extends Component {
           y={meme.position.y + "px"}
           dominantBaseline="middle"
           textAnchor="middle"
+          onTouchStart={(e) => {
+            this.handleTouchDown(e, meme.id);
+          }}
+          onTouchEnd={(e) => {
+            this.handleTouchUp(meme.id);
+          }}
           onMouseDown={(e) => {
             this.handleMouseDown(e, meme.id);
           }}
