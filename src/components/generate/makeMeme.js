@@ -136,7 +136,7 @@ export default class Makememe extends Component {
       isDragActive: true,
     });
   };
-  
+
   handleTouchMove = (e, id) => {
     if (this.state.isDragActive) {
       const { memeTexts } = this.state;
@@ -246,7 +246,7 @@ export default class Makememe extends Component {
 
   renderMemeTexts = () => {
     const memeStyle = {
-      fontFamily: "impact, sans-serif",
+      fontFamily: "impact",
       textTransform: "uppercase",
       color: "white",
       letterSpacing: "1px",
