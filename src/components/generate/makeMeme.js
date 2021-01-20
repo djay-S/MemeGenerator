@@ -246,7 +246,7 @@ export default class Makememe extends Component {
 
   renderMemeTexts = () => {
     const memeStyle = {
-      fontFamily: "impact",
+      fontFamily: "Impacto, Impact, Arial",
       textTransform: "uppercase",
       color: "white",
       letterSpacing: "1px",
