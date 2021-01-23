@@ -103,4 +103,8 @@ exports.memes = [
   "American Chopper Argument.jpg",
   "Mocking Spongebob.jpg",
   "Always Has Been.png",
+  "Mother Ignoring Kid Drowning In A Pool.jpg",
+  "Captain america elevator.png",
+  "Two giants looking at a small guy-SRGRAFO.png",
+  "Blue Armor Guy-SRGRAFO.png",
 ];

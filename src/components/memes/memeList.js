@@ -10,6 +10,7 @@ export default class Memelist extends Component {
     super(props);
     this.state = {
       memeImages: [],
+      filteredImages: [],
     };
   }
 
@@ -17,39 +18,65 @@ export default class Memelist extends Component {
     if (memesList) {
       const { memes } = memesList;
       memes.sort();
-      this.setState({ memeImages: memes });
+      this.setState({ memeImages: memes, filteredImages: memes });
     }
   }
 
-  render() {
-    const images = this.state.memeImages;
+  searchMeme = (e) => {
+    const search = e.target.value;
+    const { memeImages } = this.state;
+    let res = memeImages;
+    if (search.length > 2) {
+      res = memeImages.filter((meme) => {
+        return meme.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+    this.setState({ filteredImages: res });
+  };
+
+  renderMemeList = () => {
+    const images = this.state.filteredImages;
     const n = images.length / 4;
+    let columnArr = [];
+    if (n >= 1) {
+      for (let i = 0; i < 4; i++) {
+        columnArr.push(
+          <div className="column">
+            {images.slice(n * i, n * (i + 1)).map((meme, id) => (
+              <Image url={imgPath + meme} name={meme.split(".")[0]} key={id} />
+            ))}
+          </div>
+        );
+      }
+      return <div className="meme-grid">{columnArr}</div>;
+    } else {
+      for (let i = 0; i < n; i++) {
+        columnArr.push(
+          <div className="search-grid">
+            {images.map((meme, id) => (
+              <Image url={imgPath + meme} name={meme.split(".")[0]} key={id} />
+            ))}
+          </div>
+        );
+      }
+      return columnArr;
+    }
+  };
+
+  render() {
     return (
       <div className="meme-list">
         <br />
-        <input type="text" placeholder="Enter meme name" />
-        <div className="meme-grid">
-          <div className="column">
-            {images.slice(0, n).map((meme, id) => (
-              <Image url={imgPath + meme} name={meme} key={id} />
-            ))}
-          </div>
-          <div className="column">
-            {images.slice(n, 2 * n).map((meme, id) => (
-              <Image url={imgPath + meme} name={meme} key={id} />
-            ))}
-          </div>
-          <div className="column">
-            {images.slice(2 * n, 3 * n).map((meme, id) => (
-              <Image url={imgPath + meme} name={meme} key={id} />
-            ))}
-          </div>
-          <div className="column">
-            {images.slice(3 * n, n * 4).map((meme, id) => (
-              <Image url={imgPath + meme} name={meme} key={id} />
-            ))}
-          </div>
+        <div className="meme-filter">
+          <input
+            type="text"
+            name="filter"
+            placeholder="Search meme "
+            onChange={this.searchMeme}
+          />
+          {/* <button className="upload">Upload your own image</button> */}
         </div>
+        {this.renderMemeList()}
       </div>
     );
   }
