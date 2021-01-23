@@ -1,11 +1,38 @@
 .meme-list {
   // background-color: #282C35;
+  margin-bottom: 2em;
+}
+.meme-filter {
+  max-width: 75%;
+  height: 2em;
+  margin: 0 auto;
+  display: grid;
+  grid-column-gap: 2em;
+  align-items: center;
+
+  grid-template-areas: "input filter";
+  input {
+    grid-area: input;
+    justify-self: center;
+    width: 50%;
+    height: 100%;
+  }
+  button {
+    grid-area: filter;
+    justify-self: center;
+    display: inline;
+    border: 1px solid black;
+  }
 }
 .meme-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 1%;
+}
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 @media screen and (min-width: 1200px) {
   .column {
