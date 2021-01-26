@@ -10,13 +10,13 @@ export default class Footer extends Component {
           <ul>
             <li>
               <div className="social">
-                <img src="../assets/github.png" />
+                <img src="../assets/github.png" alt="github" />
                 Github
               </div>
             </li>
             <li>
               <div className="social">
-                <img src="../assets/linkedin.png" />
+                <img src="../assets/linkedin.png" alt="linkedIn" />
                 LinkedIn
               </div>
             </li>
