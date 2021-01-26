@@ -1,8 +1,32 @@
 .footer {
   position: fixed;
+  text-align: left;
   bottom: 0px;
   width: 100%;
-  background-color: grey;
-  border: 1px solid black;
-  height: 2em;
+  background-color: white;
+  border-top: 1px solid black;
+  height: 3em;
+  .contact {
+    position: relative;
+    li {
+      display: inline;
+    }
+    .social {
+      position: relative;
+      top: 0.75em;
+      display: inline;
+      padding: 1%;
+      @media screen and (min-width: 1200px) {
+        filter: grayscale(100%);
+        &:hover {
+          filter: grayscale(0%);
+        }
+      }
+      img {
+        height: 1.5em;
+        width: auto;
+        margin-right: 0.5%;
+      }
+    }
+  }
 }

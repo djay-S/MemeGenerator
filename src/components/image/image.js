@@ -24,7 +24,9 @@ export default class Image extends Component {
     const modalStyle = { content: { padding: "2%" } };
     return (
       <div className="image" onClick={this.imageClick}>
-        <img src={this.props.url} alt={this.props.name} />
+        <div className="meme-image">
+          <img src={this.props.url} alt={this.props.name} />
+        </div>
         {this.props.name}
         <Modal
           isOpen={this.state.isModalOpen}
