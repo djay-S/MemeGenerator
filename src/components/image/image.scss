@@ -5,14 +5,17 @@
   padding: 5%;
   margin: 2.5% 1%;
   &:hover {
-    box-shadow: 0 0 10 black;
+    box-shadow: 0 0 10px black;
   }
   .meme-image {
     background-image: url("./loader.png");
     background-repeat: no-repeat;
     background-position: center;
+    color: white;
+    color: rgba($color: white, $alpha: .0);
   }
   img {
+    max-height: 75vh;
     min-height: 150px;
     border: 1px solid black;
     width: 100%;
